@@ -18,6 +18,7 @@ class Config:
 @dataclass
 class LocalConfig(Config):
     PROJ_RELOAD:bool = True
+    DB_URL: str = "mysql+pymysql://travis@localhost/notification_api?charset=utf8mb4"
 
 @dataclass #dict형태로 보고 싶기 때문이라고 하는데..
 class ProdConfig(Config):
