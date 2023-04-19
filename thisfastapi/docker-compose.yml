@@ -1,0 +1,12 @@
+services:
+  fastapi:
+    build: ./
+    container_name: my-fastapi
+    # depends_on:
+    #   - db
+    ports:
+      - '8000:8000'
+    volumes:
+      - ./:/usr/app
+
+
