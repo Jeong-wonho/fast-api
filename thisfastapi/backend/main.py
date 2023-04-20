@@ -7,7 +7,7 @@ from domain.question import question_router
 app = FastAPI()
 
 origins = [
-    "http://localhost:8080",    # 또는 "http://localhost:5173"
+    "http://localhost:5173",    # 또는 "http://localhost:5173"
 ]
 
 app.add_middleware(
