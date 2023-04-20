@@ -1,6 +1,9 @@
 from fastapi import FastAPI
 from starlette.middleware.cors import CORSMiddleware
 
+#도메인 등록
+from domain.question import question_router
+
 app = FastAPI()
 
 origins = [
@@ -16,6 +19,8 @@ app.add_middleware(
 )
 
 
-@app.get("/hello")
-def hello():
-    return {"message": "안녕하세요 파이보"}
+# @app.get("/hello")
+# def hello():
+#     return {"message": "안녕하세요 파이보"}
+
+app.include_router(question_router.router)
