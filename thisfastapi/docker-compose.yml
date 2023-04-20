@@ -1,12 +1,20 @@
 services:
   fastapi:
-    build: ./
+    build: ./backend
     container_name: my-fastapi
     # depends_on:
     #   - db
     ports:
       - '8000:8000'
     volumes:
-      - ./:/usr/app
+      - ./backend:/usr/app
+  # svelt:
+  #   build: ./svelt-docker
+  #   container_name: my-svelte
+  #   ports:
+  #     - '5000:80'
+  #   volumes:
+  #     - ./svelte-docker:/usr/svelte
+
 
 
