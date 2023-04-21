@@ -3,7 +3,8 @@ const fastapi = (operation, url, params, success_callback, failure_callback) => 
     let content_type = 'application/json'
     let body = JSON.stringify(params)
 
-    let _url = import.meta.env.VITE_SERVER_URL+url
+    let _url = 'http://127.0.0.1:8000'+url
+    
     if(method === 'get') {
         _url += "?" + new URLSearchParams(params)
     }
@@ -21,6 +22,12 @@ const fastapi = (operation, url, params, success_callback, failure_callback) => 
 
     fetch(_url, options)
         .then(response => {
+            if(response.status === 204) {  // No content
+                if(success_callback) {
+                    success_callback()
+                }
+                return
+            }
             response.json()
                 .then(json => {
                     if(response.status >= 200 && response.status < 300) {  // 200 ~ 299
