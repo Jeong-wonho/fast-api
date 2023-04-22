@@ -23,3 +23,8 @@ class QuestionCreate(BaseModel):
         if not v or not v.strip():
             raise ValueError('빈 값은 허용되지 않습니다.')
         return v
+    
+class QuestionList(BaseModel):
+    total: int = 0
+    #확인 반드시 필요 (question_list)
+    question_list: list = 0
