@@ -35,7 +35,7 @@
 
   }
 
-  get_question_list($page);
+  $: get_question_list($page);
   
   function customRange(start, stop, total_page) {
     //보여지는것이다.
