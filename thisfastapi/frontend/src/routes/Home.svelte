@@ -7,12 +7,20 @@
   let page = 0;
   let total = 0;
   const maxButton = 10;
-  let currentPage = 1;
-  let page_list = []
+  let start = 0;
+  let stop = 10;
 
   $: total_page = Math.ceil(total / size);
 
+
   function get_question_list(_page) {
+    if (_page < 0) {
+      _page = 0
+    }
+    
+    if (_page > total_page) {
+      _page = total_page - 1;
+    }
     let params = {
       page: _page,
       size: size,
@@ -22,11 +30,19 @@
       page = _page;
       total = json.total;
     });
+    console.log("page",_page)
+    start = Math.floor(_page/10)*10
+
   }
 
   get_question_list(0);
   
   function customRange(start, stop, total_page) {
+    //보여지는것이다.
+    console.log("start", start);
+    if (start < 0) {
+      start = 0
+    }
     if (stop > total_page) {
       stop = total_page
     }
@@ -57,7 +73,8 @@
     </tbody>
   </table>
   
-
+  <div>page:{page}</div>
+  <div>start:{start}</div>
   <!-- 페이징 처리 시작 -->
   <ul class="pagination justify-content-center">
     <!-- 이전페이지 -->
@@ -68,7 +85,7 @@
     </li>
     <!--페이지번호-->
 
-    {#each customRange(page, page+10, total_page) as loop_page}
+    {#each customRange(start, start+10, total_page) as loop_page}
       <!-- {#if loop_page >= page-5 && loop_page <= total_page}  -->
         <li class="page-item {loop_page === page && 'active'}">
           <button
