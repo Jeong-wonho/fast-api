@@ -1,8 +1,8 @@
-import { writable } from "svelte/store";
+import { writable } from 'svelte/store'
 
 const persist_storage = (key, initValue) => {
     const storedValueStr = localStorage.getItem(key)
-    const store = writable(storedValueStr != null ? JSON.parse(storedValueStr): initValue)
+    const store = writable(storedValueStr != null ? JSON.parse(storedValueStr) : initValue)
     store.subscribe((val) => {
         localStorage.setItem(key, JSON.stringify(val))
     })

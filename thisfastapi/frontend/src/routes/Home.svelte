@@ -1,24 +1,27 @@
 <script>
   import fastapi from "../lib/api";
   import { link } from "svelte-spa-router";
-  import {page} from "../lib/store"
+  import { page } from "../lib/store"
+  import moment from "moment"
+  moment.locale('ko')
 
   let question_list = [];
   let size = 10;
   let total = 0;
   const maxButton = 10;
   let start = 0;
-  let stop = 10;
+  
   
   $: total_page = Math.ceil(total / size);
-  
 
   function get_question_list(_page) {
+    
+
     if (_page < 0) {
       _page = 0
     }
-
-    if (_page > total_page) {
+    
+    if (_page > total_page && total_page > 0) {
       _page = total_page - 1;
     }
     let params = {
@@ -30,11 +33,10 @@
       $page = _page;
       total = json.total;
     });
-    console.log("page",_page)
+    
     start = Math.floor(_page/10)*10
 
   }
-
   $: get_question_list($page);
   
   function customRange(start, stop, total_page) {
@@ -42,6 +44,7 @@
     if (start < 0) {
       start = 0
     }
+
     if (stop > total_page) {
       stop = total_page
     }
@@ -62,11 +65,12 @@
     <tbody>
       {#each question_list as question, i}
         <tr>
-          <td>{i + 1}</td>
+          <td>{ total - ($page * size) - i }</td>
           <td>
             <a use:link href="/detail/{question.id}">{question.subject}</a>
+            
           </td>
-          <td>{question.create_date}</td>
+          <td>{moment(question.create_date).format("YYYY년 MM월 DD일 hh:mm a")}</td>
         </tr>
       {/each}
     </tbody>
