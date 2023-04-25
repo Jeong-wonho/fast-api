@@ -9,7 +9,7 @@ class Question(BaseModel):
     subject: str
     content: str
     create_date: datetime.datetime
-    answers: list = []
+    answers: list[Answer] = []
     
     class Config:
         orm_mode = True
@@ -27,4 +27,4 @@ class QuestionCreate(BaseModel):
 class QuestionList(BaseModel):
     total: int = 0
     #확인 반드시 필요 (question_list)
-    question_list: list = 0
+    question_list: list[Question] = []
