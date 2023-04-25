@@ -9,9 +9,9 @@
   const maxButton = 10;
   let start = 0;
   let stop = 10;
-
+  
   $: total_page = Math.ceil(total / size);
-
+  
 
   function get_question_list(_page) {
     if (_page < 0) {
@@ -39,7 +39,6 @@
   
   function customRange(start, stop, total_page) {
     //보여지는것이다.
-    console.log("start", start);
     if (start < 0) {
       start = 0
     }
@@ -73,8 +72,7 @@
     </tbody>
   </table>
   
-  <div>page:{page}</div>
-  <div>start:{start}</div>
+  
   <!-- 페이징 처리 시작 -->
   <ul class="pagination justify-content-center">
     <!-- 이전페이지 -->
