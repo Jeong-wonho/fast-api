@@ -9,7 +9,7 @@ class Question(BaseModel):
     subject: str
     content: str
     create_date: datetime.datetime
-    answers: list[Answer] = []
+    answers: list = []
     
     class Config:
         orm_mode = True
