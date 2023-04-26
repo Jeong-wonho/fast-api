@@ -1,7 +1,7 @@
 <script>
   import fastapi from "../lib/api";
   import { link } from "svelte-spa-router";
-  import { page } from "../lib/store";
+  import { page, is_login } from "../lib/store";
   import moment from "moment";
   moment.locale("ko");
 
@@ -74,11 +74,12 @@
             <a use:link href="/detail/{question.id}">{question.subject}</a>
           </td>
           <td>
-          {#if question.answers.length > 0}
-            <span class="text-danger small mx-2">{question.answers.length}</span
-            >
-          {/if}
-        </td>
+            {#if question.answers.length > 0}
+              <span class="text-danger small mx-2"
+                >{question.answers.length}</span
+              >
+            {/if}
+          </td>
           <td
             >{moment(question.create_date).format(
               "YYYY년 MM월 DD일 hh:mm a"
@@ -116,5 +117,9 @@
     </li>
   </ul>
 
-  <a use:link href="/question-create" class="btn btn-primary">질문 등록 하기</a>
+  <a
+    use:link
+    href="/question-create"
+    class="btn btn-primary {$is_login ? '' : 'disabled'}">질문 등록 하기</a
+  >
 </div>

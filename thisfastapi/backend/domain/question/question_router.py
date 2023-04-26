@@ -3,10 +3,12 @@ from sqlalchemy.orm import Session
 
 from database import get_db
 from domain.question import question_schema, question_crud
+from domain.user.user_router import get_current_user
+from models import User
 from starlette import status
 
 router = APIRouter(
-    prefix = "/api/question",
+    prefix="/api/question",
 )
 
 # @router.get("/list", response_model=list[question_schema.Question])
@@ -14,6 +16,8 @@ router = APIRouter(
 #     _question_list = question_crud.get_question_list(db)
 #     print(_question_list)
 #     return _question_list
+
+
 @router.get("/list", response_model=question_schema.QuestionList)
 def question_list(db: Session = Depends(get_db),
                   page: int = 0, size: int = 10):
@@ -30,7 +34,9 @@ def question_detail(question_id: int, db: Session = Depends(get_db)):
     question = question_crud.get_question(db, question_id=question_id)
     return question
 
+
 @router.post("/create", status_code=status.HTTP_204_NO_CONTENT)
 def question_create(_question_create: question_schema.QuestionCreate,
-                    db: Session = Depends(get_db)):
-    question_crud.create_question(db=db, question_create=_question_create)
+                    db: Session = Depends(get_db), current_user: User = Depends(get_current_user)):
+    question_crud.create_question(
+        db=db, question_create=_question_create, user=current_user)
