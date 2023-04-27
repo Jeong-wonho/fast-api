@@ -24,6 +24,7 @@ naming_convention = {
 }
 Base.metadata = MetaData(naming_convention=naming_convention)
 
+
 def get_db():
     db = SessionLocal()
     try:

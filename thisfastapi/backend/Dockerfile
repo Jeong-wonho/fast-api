@@ -1,5 +1,5 @@
 # 베이스 이미지로 파이썬 3.9을 사용합니다.
-FROM python:3.9
+FROM python:3.10
 
 # 작업 디렉토리를 설정합니다.
 WORKDIR /usr/app

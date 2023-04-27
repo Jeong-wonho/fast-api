@@ -12,7 +12,7 @@ from domain.user import user_crud, user_schema
 from domain.user.user_crud import pwd_context
 
 ACCESS_TOKEN_EXPIRE_MINUTES = 60 * 24
-SECRET_KEY = "cd0765b1e18b9eadd7f2e6ebd2a62e7e06c40e74b1def179d8da36c08fe0caa6"
+SECRET_KEY = "36cde211d6566b43ca073db42b974225b508a19fa59606b3f2422128f06628e9"
 ALGORITHM = "HS256"
 oauth2_scheme = OAuth2PasswordBearer(tokenUrl="/api/user/login")
 
