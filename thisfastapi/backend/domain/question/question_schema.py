@@ -30,3 +30,9 @@ class QuestionList(BaseModel):
     total: int = 0
     #확인 반드시 필요 (question_list)
     question_list: list[Question] = []
+
+class QuestionUpdate(QuestionCreate):
+    question_id: int
+
+class QuestionDelete(BaseModel):
+    question_id: int

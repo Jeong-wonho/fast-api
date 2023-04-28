@@ -77,12 +77,9 @@
               <span class="text-danger small mx-2"
                 >{question.answers.length}</span
               >
-              <spaan>
-                {question.user}
-              </spaan>
             {/if}
           </td>
-          <td>{ question.user ? question.user.username : "" }</td>
+          <td>{question.user ? question.user.username : ""}</td>
           <td
             >{moment(question.create_date).format(
               "YYYY년 MM월 DD일 hh:mm a"
