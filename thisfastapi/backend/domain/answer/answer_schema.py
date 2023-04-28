@@ -18,6 +18,7 @@ class Answer(BaseModel):
     create_date : datetime.datetime
     user: User | None
     question_id: int
+    modify_date: datetime.datetime | None = None
 
     class Config:
         orm_mode = True
