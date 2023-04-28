@@ -35,11 +35,11 @@
     start = Math.floor(_page / 10) * 10;
   }
 
-  function get_question(question_id) {
-    fastapi("get", "/api/question/detail/" + question_id, {}, (json) => {
-      answer = json.answers.length;
-    });
-  }
+  // function get_question(question_id) {
+  //   fastapi("get", "/api/question/detail/" + question_id, {}, (json) => {
+  //     answer = json.answers.length;
+  //   });
+  // }
 
   $: get_question_list($page);
 
