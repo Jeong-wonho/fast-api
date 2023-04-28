@@ -3,14 +3,15 @@
   import { link } from "svelte-spa-router";
   import { page, is_login } from "../lib/store";
   import moment from "moment";
+  import "moment/locale/ko";
   moment.locale("ko");
 
   let question_list = [];
   let size = 10;
   let total = 0;
-  const maxButton = 10;
+  // const maxButton = 10;
   let start = 0;
-  let answer = "";
+  let kw = "";
 
   $: total_page = Math.ceil(total / size);
 
@@ -25,6 +26,7 @@
     let params = {
       page: _page,
       size: size,
+      keyword: kw,
     };
     fastapi("get", "/api/question/list", params, (json) => {
       question_list = json.question_list;
@@ -34,12 +36,6 @@
 
     start = Math.floor(_page / 10) * 10;
   }
-
-  // function get_question(question_id) {
-  //   fastapi("get", "/api/question/detail/" + question_id, {}, (json) => {
-  //     answer = json.answers.length;
-  //   });
-  // }
 
   $: get_question_list($page);
 
@@ -57,6 +53,24 @@
 </script>
 
 <div class="container my-3">
+  <div class="row my-3">
+    <div class="col-6">
+      <a
+        use:link
+        href="/question-create"
+        class="btn btn-primary {$is_login ? '' : 'disabled'}">질문 등록하기</a
+      >
+    </div>
+    <div class="col-6">
+      <div class="input-group">
+        <input type="text" class="form-control" bind:value={kw} />
+        <button
+          class="btn btn-outline-secondary"
+          on:click={() => get_question_list(0)}>찾기</button
+        >
+      </div>
+    </div>
+  </div>
   <table class="table">
     <thead>
       <tr class="text-center table-dark">
@@ -117,9 +131,4 @@
     </li>
   </ul>
 
-  <a
-    use:link
-    href="/question-create"
-    class="btn btn-primary {$is_login ? '' : 'disabled'}">질문 등록 하기</a
-  >
 </div>
