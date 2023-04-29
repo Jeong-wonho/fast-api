@@ -22,15 +22,11 @@ app.add_middleware(
     allow_headers=["*"],
 )
 
-@app.get("/hello")
-def hello():
-    return {"message": "안녕하세요 파이보"}
-
 app.include_router(question_router.router)
 app.include_router(answer_router.router)
 app.include_router(user_router.router)
-app.mount("/assets", StaticFiles(directory="/frontend/dist/assets"))
+app.mount("/assets", StaticFiles(directory="frontend/dist/assets"))
 
 @app.get("/")
 def index():
-    return FileResponse("/frontend/dist/index.html")
+    return FileResponse("frontend/dist/index.html")
