@@ -15,6 +15,14 @@ def create_answer(db: Session, question: Question, answer_create: AnswerCreate, 
     db.add(db_answer)
     db.commit()
 
+def get_answer_list(db: Session, skip: int = 0, limit: int = 10):
+    _question_list = db.query(Question)\
+        .order_by(Question.create_date.desc())
+
+    total = _question_list.count()
+    question_list = _question_list.offset(skip).limit(limit).all()
+    return total, question_list  # (전체 건수, 페이징 적용된 질문 목록)
+
 def get_answer(db:Session, answer_id:int):
     return db.query(Answer).get(answer_id)
 
