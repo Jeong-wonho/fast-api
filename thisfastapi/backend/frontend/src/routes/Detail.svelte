@@ -18,14 +18,37 @@
   let error = { detail: [] };
   const itemsPerPage = 5;
   let currentPage = 1; 
-  const totalPage = Math.ceil(question.answers.length/ itemsPerPage);
-  const startIndex= (currentPage-1) * itemsPerPage;
-  const endIndex= startIndex + itemsPerPage;
+  let totalPage = 0;
+  let startIndex= (currentPage-1) * itemsPerPage;
+  let endIndex= startIndex + itemsPerPage;
 
 
+// 이전 페이지로 이동하는 함수
+  function previousPage() {
+    currentPage--;
+    updateIndexes();
+  }
+// 다음 페이지로 이동하는 함수
+  function nextPage() {
+    currentPage++;
+    updateIndexes();
+  } 
+  function goToPage(pageNumber) {
+    currentPage = pageNumber;
+    updateIndexes();
+  }
+
+  // 시작 인덱스와 끝 인덱스를 업데이트하는 함수
+  function updateIndexes() {
+    startIndex = (currentPage -1) * itemsPerPage;
+    endIndex= startIndex + itemsPerPage;
+  }
+  
+  /** 질문과 답변 받아오는 함수*/
   function get_question() {
     fastapi("get", "/api/question/detail/" + question_id, {}, (json) => {
       question = json;
+      totalPage = Math.ceil(question.answers.length/ itemsPerPage);
     });
   }
   get_question();
@@ -205,7 +228,7 @@
   <h5 class="border-bottom my-3 py-2">
     {question.answers.length}개의 답변이 있습니다.
   </h5>
-  {#each question.answers as answer}
+  {#each question.answers.slice(startIndex, endIndex) as answer}
     <div class="card my-3">
       <div class="card-body">
         <div class="card-text">
@@ -252,6 +275,30 @@
       </div>
     </div>
   {/each}
+
+   <!-- 페이징 처리 시작 -->
+   <ul class="pagination justify-content-center">
+    <!-- 이전페이지 -->
+    <li class="page-item {currentPage <= 1 && 'disabled'}">
+      <button class="page-link" on:click={() => previousPage(currentPage)}
+        >이전</button
+      >
+    </li>
+    <!--페이지번호-->
+    {#each Array(totalPage).fill().map((_,i) => i + 1) as page}
+      <li class="page-item {page === currentPage && 'active'}">
+        <button on:click={() => goToPage(page)} class="page-link"
+          >{page}</button
+        >
+      </li>
+    {/each}
+    <!--다음페이지-->
+    <li class="page-item {currentPage >= totalPage && 'disabled'}">
+      <button class="page-link" on:click={() => nextPage(currentPage + 10)}
+        >다음</button
+      >
+    </li>
+  </ul>
   <!-- 답변 등록 -->
   <Error {error} />
   <form method="post" class="my-3">
