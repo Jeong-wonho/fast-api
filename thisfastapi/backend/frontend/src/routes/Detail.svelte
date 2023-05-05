@@ -16,6 +16,12 @@
   let question = { answers: [], voter: [] , content: ''};
   let content = "";
   let error = { detail: [] };
+  const itemsPerPage = 5;
+  let currentPage = 1; 
+  const totalPage = Math.ceil(question.answers.length/ itemsPerPage);
+  const startIndex= (currentPage-1) * itemsPerPage;
+  const endIndex= startIndex + itemsPerPage;
+
 
   function get_question() {
     fastapi("get", "/api/question/detail/" + question_id, {}, (json) => {

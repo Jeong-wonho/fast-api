@@ -1,4 +1,4 @@
-from fastapi import APIRouter, Depends, HTTPException
+from fastapi import APIRouter, Depends, HTTPException, Response
 from sqlalchemy.orm import Session
 
 from database import get_db
@@ -40,6 +40,7 @@ def question_create(_question_create: question_schema.QuestionCreate,
                     db: Session = Depends(get_db), current_user: User = Depends(get_current_user)):
     question_crud.create_question(
         db=db, question_create=_question_create, user=current_user)
+    return Response(status_code=204)
 
 @router.put("/update", status_code=status.HTTP_204_NO_CONTENT)
 def question_update(_question_update: question_schema.QuestionUpdate,
@@ -53,6 +54,7 @@ def question_update(_question_update: question_schema.QuestionUpdate,
         raise HTTPException(status_code=status.HTTP_400_BAD_REQUEST,
                             detail = "수정 권한이 없습니다.")
     question_crud.update_question(db = db, db_question= db_question, question_update=_question_update)
+    return Response(status_code=204)
 
 @router.delete("/delete", status_code= status.HTTP_204_NO_CONTENT)
 def question_delete(_question_delete: question_schema.QuestionDelete,
@@ -66,6 +68,7 @@ def question_delete(_question_delete: question_schema.QuestionDelete,
         raise HTTPException(status_code= status.HTTP_400_BAD_REQUEST,
                             detail= "삭제 권한이 없습니다.")
     question_crud.delete_question(db=db, db_question=db_question)
+    return Response(status_code=204)
 
 @router.post("/vote", status_code=status.HTTP_204_NO_CONTENT)
 def question_vote(_question_vote: question_schema.QuestionVote,
@@ -77,3 +80,4 @@ def question_vote(_question_vote: question_schema.QuestionVote,
                             detail="데이터를 찾을 수 없습니다.")
     
     question_crud.vote_question(db, db_question=db_question, db_user = current_user)
+    return Response(status_code=204)

@@ -1,4 +1,4 @@
-from fastapi import APIRouter, Depends, HTTPException
+from fastapi import APIRouter, Depends, HTTPException, Response
 from sqlalchemy.orm import Session
 from starlette import status
 
@@ -8,9 +8,16 @@ from domain.question import question_crud
 from domain.user.user_router import get_current_user
 from models import User
 
+import logging
+
+# logging 추가
+logging.basicConfig(level=logging.DEBUG)
+
+#router 시작
 router = APIRouter(
     prefix="/api/answer",
 )
+
 
 
 @router.post("/create/{question_id}", status_code=status.HTTP_204_NO_CONTENT)
@@ -25,7 +32,10 @@ def answer_create(question_id: int,
         raise HTTPException(status_code=404, detail="Question not Found")
     answer_crud.create_answer(db, question=question,
                               answer_create=_answer_create, user=current_user)
-    
+    return Response(status_code=204)
+
+
+# 기존 데이터 추가 answer_detail
 @router.get("/detail/{answer_id}", response_model=answer_schema.Answer)
 def answer_detail(answer_id:int, db: Session = Depends(get_db)):
     answer= answer_crud.get_answer(db, answer_id=answer_id)
@@ -57,6 +67,7 @@ def answer_delete(_answer_delete: answer_schema.AnswerDelete,
         raise HTTPException(status_code=status.HTTP_400_BAD_REQUEST,
                             detail="삭제 권한이 없습니다.")
     answer_crud.delete_answer(db=db, db_answer=db_answer)
+    return Response(status_code=204)
 
 @router.post("/vote", status_code=status.HTTP_204_NO_CONTENT)
 def answer_vote(_answer_vote: answer_schema.AnswerVote,
@@ -67,3 +78,4 @@ def answer_vote(_answer_vote: answer_schema.AnswerVote,
         raise HTTPException(status_code=status.HTTP_400_BAD_REQUEST,
                             detail="데이터를 찾을수 없습니다.")
     answer_crud.vote_answer(db, db_answer=db_answer, db_user=current_user)
+    return Response(status_code=204)
